@@ -1,6 +1,6 @@
 <template>
     <div class="add-task-container">
-        <h1>Añadir Tarea</h1>
+        <h1 class="title">Añadir Tarea</h1>
         <div class="input-group">
             <input 
                 v-model="newTask" 
@@ -13,12 +13,20 @@
 
         <div v-if="tasks.length > 0" class="task-list">
             <div v-for="task in tasks" :key="task.id" class="task-item">
-                <span :class="{ completed: task.completed }">{{ task.todo }}</span>
-                <div>
-                    <button @click="toggleTaskCompletion(task)">
-                        {{ task.completed ? 'Desmarcar' : 'Completar' }}
+                <div class="task-content">
+                    <span class="task-text">{{ task.todo }}</span>
+                    <span class="task-status" :class="{ completed: task.completed }">
+                        {{ task.completed ? 'Completado' : 'Pendiente' }}
+                    </span>
+                </div>
+                <div class="task-buttons">
+                    <button @click="toggleTaskCompletion(task)" class="complete-button">
+                        <span v-if="task.completed">✔️</span>
+                        <span v-else>✔️</span>
                     </button>
-                    <button @click="deleteTask(task)">Eliminar</button>
+                    <button @click="deleteTask(task)" class="delete-button">
+                        🗑️
+                    </button>
                 </div>
             </div>
         </div>
@@ -30,8 +38,8 @@ export default {
     name: "AddTask",
     data() {
         return {
-            newTask: "", // Campo de entrada para la nueva tarea
-            tasks: [],   // Lista de tareas locales
+            newTask: "",
+            tasks: [],
         };
     },
     methods: {
@@ -41,20 +49,15 @@ export default {
             const newTask = {
                 todo: this.newTask,
                 completed: false,
-                id: Date.now(), 
+                id: Date.now(),
             };
 
-            // Añadir la nueva tarea al inicio de la lista
             this.tasks.unshift(newTask);
-            this.newTask = ""; // Limpiar el campo de entrada después de agregar
+            this.newTask = "";
         },
-
-        // Elimina una tarea específica de la lista
         deleteTask(task) {
             this.tasks = this.tasks.filter((t) => t.id !== task.id);
         },
-
-        // Cambia el estado de la tarea entre completada y no completada
         toggleTaskCompletion(task) {
             task.completed = !task.completed;
         },
@@ -65,30 +68,52 @@ export default {
 <style scoped>
 .add-task-container {
     padding: 20px;
-    max-width: 400px;
+    max-width: 500px;
     margin: 0 auto;
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #154189;
+    margin-bottom: 20px;
 }
 
 .input-group {
     display: flex;
-    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .task-input {
-    flex-grow: 1;
-    padding: 8px;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 100%;
+    max-width: 350px;
+    padding: 10px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 25px 0 0 25px;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    border-right: none;
 }
 
 .add-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007bff;
+    padding: 10px 20px;
+    background-color: #1e90ff;
     color: white;
+    border: none;
+    border-radius: 0 25px 25px 0;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+}
+
+.add-button:hover {
+    background-color: #0073e6;
 }
 
 .task-list {
@@ -99,12 +124,63 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.completed {
-    text-decoration: line-through;
-    color: gray;
+.task-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.task-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.task-status {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #f0ad4e;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.task-status.completed {
+    background-color: #5cb85c; /* Verde para tareas completadas */
+}
+
+.task-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.complete-button, .delete-button {
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.complete-button {
+    color: #5cb85c;
+    border-color: #5cb85c;
+}
+
+.delete-button {
+    color: #d9534f;
+    border-color: #d9534f;
 }
 </style>
+

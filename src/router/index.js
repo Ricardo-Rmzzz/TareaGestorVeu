@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import AddTask from '@/views/AddTask.vue';
+import TaskList from '@/views/TaskList.vue';
+import CombinedView from '@/views/CombinedView.vue';
 // Importa los otros componentes en esta sección
 
 Vue.use(VueRouter);
@@ -12,14 +14,7 @@ const routes = [
     name: 'home',
     component: HomeView
   },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }, 
+
   {
     path: '/addtask',
     name: 'AddTask', // Ruta para añadir tareas
@@ -27,7 +22,18 @@ const routes = [
     // Implementa la lógica para añadir nuevas tareas.
   },
 
-  // Las demás rutas deben ir aquí también
+  {
+    path: '/tasklist',
+    name: 'TaskList', // Ruta para añadir tareas
+    component: TaskList // Aquí se debe cargar el componente AddTask
+    // Implementa la lógica para añadir nuevas tareas.
+  },
+  {
+    path: '/combinedview',
+    name: 'CombinedView', // Ruta para añadir tareas
+    component: CombinedView // Aquí se debe cargar el componente AddTask
+    // Implementa la lógica para añadir nuevas tareas.
+  },
 ];
 
 const router = new VueRouter({
