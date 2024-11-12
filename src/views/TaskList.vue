@@ -1,67 +1,4 @@
-<template>
-    <div>
-        <h1 class="title">Lista de Tareas</h1>
-        <button @click="fetchTasks">Cargar Tareas</button>
-        <div v-if="tasks.length > 0">
-            <div v-for="task in tasks" :key="task.id" class="task-card">
-                <div class="task-content">
-                    <h5 :style="{ textDecoration: task.completed ? 'line-through' : 'none' }">{{ task.todo }}</h5>
-                    <span class="task-status">{{ task.completed ? 'Completada' : 'Pendiente' }}</span>
-                    <div class="task-actions">
-                        <button @click="toggleTaskCompletion(task)">
-                            {{ task.completed ? 'Desmarcar' : 'Completar' }}
-                        </button>
-                        <button @click="deleteTask(task)">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
-import axios from 'axios';
-
-export default {
-    name: "TaskList",
-    data() {
-        return {
-            tasks: [], // Almacenamiento local de las tareas traídas de la API
-        };
-    },
-    methods: {
-        // Llamada para obtener las tareas desde la API externa
-        fetchTasks() {
-            axios.get('https://dummyjson.com/todos')
-                .then(response => {
-                    this.tasks = response.data.todos; // Asumiendo que la API devuelve un objeto con una propiedad "todos"
-                })
-                .catch(error => {
-                    console.error("Error al obtener las tareas:", error);
-                });
-        },
-
-        // Cambiar el estado de una tarea (completada/no completada)
-        toggleTaskCompletion(task) {
-            task.completed = !task.completed;
-        },
-
-        // Eliminar la tarea seleccionada
-        deleteTask(task) {
-            this.tasks = this.tasks.filter((t) => t.id !== task.id);
-        },
-    },
-
-    // Llamada a la API cuando el componente se monta
-    mounted() {
-        // Esta línea se puede comentar o eliminar si no se quiere cargar automáticamente las tareas al iniciar el componente.
-        // this.fetchTasks();
-    },
-};
-</script>
-
 <style scoped>
-/* Estilos generales */
 .title {
     font-size: 2rem;
     font-weight: bold;
@@ -69,34 +6,39 @@ export default {
     margin-bottom: 20px;
 }
 
-button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #007bff;
+.add-button {
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #00bcd4, #4caf50); /* Gradiente verde agua, igual que la barra de navegación */
     color: white;
     border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
 }
 
-button:hover {
-    background-color: #0056b3;
+.add-button:hover {
+    background: linear-gradient(90deg, #00bcd4, #4caf50); /* Mantener el mismo gradiente en el hover */
 }
 
-/* Estilos para los cuadros de las tareas */
 .task-card {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
 }
 
 .task-content {
-    flex: 1;
+    width: 100%;
+    text-align: center;
 }
 
 h5 {
@@ -105,39 +47,46 @@ h5 {
 }
 
 .task-status {
+    font-size: 0.9rem;
     font-weight: bold;
-    margin-left: 10px;
-    color: green;
-}
-
-.task-status.pendiente {
-    color: red;
-}
-
-/* Estilo para acciones de la tarea */
-.task-actions button {
-    margin: 0 5px;
+    color: #fff;
+    background-color: #f0ad4e;
     padding: 5px 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
+    border-radius: 5px;
+}
+
+.task-status.completed {
+    background-color: #5cb85c;
+}
+
+.task-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.complete-button, .delete-button {
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 1.1rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.task-actions button:hover {
-    background-color: #218838;
+.complete-button {
+    color: #5cb85c;
+    border-color: #5cb85c;
 }
 
-.task-actions button:last-child {
-    background-color: #dc3545;
-}
-
-.task-actions button:last-child:hover {
-    background-color: #c82333;
-}
-
-/* Estilo para tareas completadas */
-h5[style*="line-through"] {
-    color: #6c757d;
+.delete-button {
+    color: #d9534f;
+    border-color: #d9534f;
 }
 </style>
+
+
+

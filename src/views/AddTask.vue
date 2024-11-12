@@ -1,70 +1,3 @@
-<template>
-    <div class="add-task-container">
-        <h1 class="title">Añadir Tarea</h1>
-        <div class="input-group">
-            <input 
-                v-model="newTask" 
-                @keyup.enter="addTask" 
-                placeholder="Añadir nueva tarea" 
-                class="task-input"
-            />
-            <button @click="addTask" class="add-button">Añadir</button>
-        </div>
-
-        <div v-if="tasks.length > 0" class="task-list">
-            <div v-for="task in tasks" :key="task.id" class="task-item">
-                <div class="task-content">
-                    <span class="task-text">{{ task.todo }}</span>
-                    <span class="task-status" :class="{ completed: task.completed }">
-                        {{ task.completed ? 'Completado' : 'Pendiente' }}
-                    </span>
-                </div>
-                <div class="task-buttons">
-                    <button @click="toggleTaskCompletion(task)" class="complete-button">
-                        <span v-if="task.completed">✔️</span>
-                        <span v-else>✔️</span>
-                    </button>
-                    <button @click="deleteTask(task)" class="delete-button">
-                        🗑️
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
-export default {
-    name: "AddTask",
-    data() {
-        return {
-            newTask: "",
-            tasks: [],
-        };
-    },
-    methods: {
-        addTask() {
-            if (this.newTask.trim() === "") return;
-
-            const newTask = {
-                todo: this.newTask,
-                completed: false,
-                id: Date.now(),
-            };
-
-            this.tasks.unshift(newTask);
-            this.newTask = "";
-        },
-        deleteTask(task) {
-            this.tasks = this.tasks.filter((t) => t.id !== task.id);
-        },
-        toggleTaskCompletion(task) {
-            task.completed = !task.completed;
-        },
-    },
-};
-</script>
-
 <style scoped>
 .add-task-container {
     padding: 20px;
@@ -101,7 +34,7 @@ export default {
 
 .add-button {
     padding: 10px 20px;
-    background-color: #1e90ff;
+    background: linear-gradient(90deg, #00bcd4, #4caf50); /* Verde agua, igual que la barra de navegación */
     color: white;
     border: none;
     border-radius: 0 25px 25px 0;
@@ -113,7 +46,7 @@ export default {
 }
 
 .add-button:hover {
-    background-color: #0073e6;
+    background: linear-gradient(90deg, #00bcd4, #4caf50); /* Mantener el mismo gradiente en el hover */
 }
 
 .task-list {
@@ -183,4 +116,5 @@ export default {
     border-color: #d9534f;
 }
 </style>
+
 
